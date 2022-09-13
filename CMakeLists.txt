@@ -3,12 +3,15 @@ project(spook)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(spook src/main.cpp)
+add_executable(spook src/demo.cpp
+        Vendor/glad/src/glad.c src/Renderer.cpp src/Camera.cpp src/Application.cpp)
 
 target_include_directories(spook PRIVATE
         Vendor/glfw-3.3.8/include
-        Vendor/glfw-3.3.8/deps
+        Vendor/glad/include
+        Vendor/glm
 )
 
 add_subdirectory(Vendor/glfw-3.3.8)
-target_link_libraries(spook glfw)
+add_subdirectory(Vendor/glm)
+target_link_libraries(spook glfw glm)
