@@ -3,7 +3,9 @@
 //
 
 #include "Renderer.h"
-#include "../Vendor/glfw-3.3.8/deps/linmath.h"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include <glm/mat4x4.hpp>
 
 static const struct {
     float x, y;
@@ -67,17 +69,14 @@ void Renderer::onInit() {
 
 void Renderer::render(const Camera &camera, float time) {
 
-    float ratio = 800 / (float) 600;
-    mat4x4 m, p, mvp;
-
     glClear(GL_COLOR_BUFFER_BIT);
-
-    mat4x4_identity(m);
-    mat4x4_rotate_Z(m, m, time);
-    mat4x4_ortho(p, -ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    mat4x4_mul(mvp, p, m);
+    float ratio = 800 / (float) 600;
+    glm::mat4x4 m = glm::identity<glm::mat4x4>();
+    m = camera.getCameraTransform() * glm::rotate(m, time, glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+    glm::mat4x4 mvp = p * m;
 
     glUseProgram(program);
-    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat *) mvp);
+    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }

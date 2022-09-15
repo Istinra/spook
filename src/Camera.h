@@ -5,16 +5,17 @@
 #ifndef SPOOK_CAMERA_H
 #define SPOOK_CAMERA_H
 
-
-#include "../Vendor/glfw-3.3.8/deps/linmath.h"
+#include "glm/mat4x4.hpp"
 
 class Camera {
 public:
     Camera();
-    void onEvent();
+    void onUpdate(float d);
+
+    const glm::mat4x4 &getCameraTransform() const;
 
 private:
-    mat4x4 view;
+    glm::mat4x4 cameraTransform;
 };
 
 

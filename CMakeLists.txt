@@ -4,7 +4,7 @@ project(spook)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(spook src/demo.cpp
-        Vendor/glad/src/glad.c src/Renderer.cpp src/Camera.cpp src/Application.cpp)
+        Vendor/glad/src/glad.c src/Renderer.cpp src/Camera.cpp src/Application.cpp src/Input/Input.cpp src/Input/Input.h src/Window.cpp src/Window.h)
 
 target_include_directories(spook PRIVATE
         Vendor/glfw-3.3.8/include

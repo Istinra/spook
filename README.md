@@ -28,6 +28,7 @@ Early to do:
 
 Get the triangle camera moving!
 
-* Move drawing code to Renderer class
+//* Move drawing code to Renderer class
+//* Swap over to GLM
 * Move out camera details into a camera class
 * Camera controller class to mutate the Camera's props

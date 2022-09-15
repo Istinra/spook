@@ -9,9 +9,10 @@ void Application::onInit() {
 }
 
 void Application::OnEvent() {
-    camera.onEvent();
+
 }
 
 void Application::onUpdate(float time) {
+    camera.onUpdate(time);
     renderer.render(camera, time);
 }
