@@ -11,6 +11,7 @@
 class Application {
 
 public:
+    Application() = default;
     void onInit();
     void OnEvent();
     void onUpdate(float time);

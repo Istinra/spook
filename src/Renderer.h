@@ -7,7 +7,10 @@
 
 
 #include "Camera.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
 #include <glad/glad.h>
+#include <memory>
 
 class Renderer {
 
@@ -17,10 +20,8 @@ public:
     void render(const Camera &camera, float time);
 
 private:
-    GLuint vertex_buffer;
-    GLuint vertex_shader;
-    GLuint fragment_shader;
-    GLuint program;
+    std::unique_ptr<Shader> shader;
+    std::unique_ptr<VertexBuffer> vertexBuffer;
     GLint mvp_location;
     GLuint vpos_location;
     GLuint vcol_location;

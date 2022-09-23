@@ -6,6 +6,7 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <glm/mat4x4.hpp>
+#include <memory>
 
 static const struct {
     float x, y;
@@ -16,6 +17,8 @@ static const struct {
                 {0.6f,  -0.4f, 0.f, 1.f, 0.f},
                 {0.f,   0.6f,  0.f, 0.f, 1.f}
         };
+
+static const float verts[] = {-0.6f, -0.4f, 1.f, 0.f, 0.f, 0.6f, -0.4f, 0.f, 1.f, 0.f, 0.f, 0.6f, 0.f, 0.f, 1.f};
 
 static const char *vertex_shader_text =
         "#version 110\n"
@@ -38,27 +41,13 @@ static const char *fragment_shader_text =
         "}\n";
 
 void Renderer::onInit() {
-    glGenBuffers(1, &vertex_buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    vertexBuffer = std::make_unique<VertexBuffer>(verts, 14);
+    shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
+    mvp_location = glGetUniformLocation(shader->getProgram(), "MVP");
+    vpos_location = glGetAttribLocation(shader->getProgram(), "vPos");
+    vcol_location = glGetAttribLocation(shader->getProgram(), "vCol");
 
-    vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_text, nullptr);
-    glCompileShader(vertex_shader);
-
-    fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_text, nullptr);
-    glCompileShader(fragment_shader);
-
-    program = glCreateProgram();
-    glAttachShader(program, vertex_shader);
-    glAttachShader(program, fragment_shader);
-    glLinkProgram(program);
-
-    mvp_location = glGetUniformLocation(program, "MVP");
-    vpos_location = glGetAttribLocation(program, "vPos");
-    vcol_location = glGetAttribLocation(program, "vCol");
-
+    vertexBuffer->bind();
     glEnableVertexAttribArray(vpos_location);
     glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
                           sizeof(vertices[0]), (void *) 0);
@@ -76,7 +65,7 @@ void Renderer::render(const Camera &camera, float time) {
     glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
     glm::mat4x4 mvp = p * m;
 
-    glUseProgram(program);
+    glUseProgram(shader->getProgram());
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }

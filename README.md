@@ -5,16 +5,10 @@ Early to do:
   * Main function inits App
   * Calls window code with props and callbacks binding to App OnEvent
 * Input handling
-* Triangle tendering
+* Triangle rendering
 * Emscripten build
-* Platform abstraction
+/* Platform abstraction
 * Roadmap
-
-
-
-
-
-
 
 
 
@@ -26,9 +20,25 @@ Early to do:
 * *Layers*
 * Basic Rendering
 
-Get the triangle camera moving!
-
-//* Move drawing code to Renderer class
-//* Swap over to GLM
-* Move out camera details into a camera class
-* Camera controller class to mutate the Camera's props
+# Options For Next Steps
+* Core Systems
+  * Logging
+  * Emscripten build
+* Rendering
+  * Rendering an actual mesh
+  * Camera
+* Scene
+  * Adding multiple entities
+  * Having a basic concept of a world
+* **This one**: Actual simple game class implemented using generic code
+  * Renderer
+    * Classes for GL primitives
+      * Shaders
+      * VBOs + Layout
+      * VAOs
+    * Mesh class
+  * Demo game class
+    * Loading
+    * Level
+    * Player
+    * Camera management
