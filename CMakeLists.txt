@@ -4,7 +4,7 @@ project(spook)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(spook src/demo.cpp
-        Vendor/glad/src/glad.c src/Renderer.cpp src/Camera.cpp src/Application.cpp src/Input/Input.cpp src/Window.cpp src/Renderer/Shader.cpp src/Renderer/Shader.h src/Renderer/Buffer.cpp src/Renderer/Buffer.h)
+        Vendor/glad/src/glad.c src/Renderer/Renderer.cpp src/Camera.cpp src/Application.cpp src/Input/Input.cpp src/Window.cpp src/Renderer/Shader.cpp src/Renderer/Shader.h src/Renderer/Buffer.cpp src/Renderer/Buffer.h src/Renderer/VertexArray.cpp)
 
 target_include_directories(spook PRIVATE
         Vendor/glfw-3.3.8/include

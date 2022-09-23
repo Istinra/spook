@@ -6,7 +6,7 @@
 #define SPOOK_APPLICATION_H
 
 #include "Camera.h"
-#include "Renderer.h"
+#include "Renderer/Renderer.h"
 
 class Application {
 

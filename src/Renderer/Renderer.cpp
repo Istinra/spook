@@ -5,7 +5,7 @@
 #include "Renderer.h"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include <glm/mat4x4.hpp>
+#include "glm/mat4x4.hpp"
 #include <memory>
 
 static const struct {
@@ -24,8 +24,8 @@ static const char *vertex_shader_text =
         R"(
         #version 110
         "uniform mat4 modelViewProjection;
-        "attribute vec3 vCol;
         "attribute vec2 vPos;
+        "attribute vec3 vCol;
         "varying vec3 color
         "void main()
         "{
@@ -48,13 +48,12 @@ void Renderer::onInit() {
             {"vPos", 2, sizeof(float)},
             {"vCol", 3, sizeof(float)}
     };
-    shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
-    shader->bind();
     std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>(verts, 14, layout);
+    shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
+    GLint vpos_location = glGetAttribLocation(shader->getProgram(), "vPos");
+    GLint vcol_location = glGetAttribLocation(shader->getProgram(), "vCol");
     vertexArray = std::make_unique<VertexArray>(std::move(vertexBuffer));
     mvp_location = glGetUniformLocation(shader->getProgram(), "modelViewProjection");
-    GLint i = glGetAttribLocation(shader->getProgram(), "vPos");
-    GLint location = glGetAttribLocation(shader->getProgram(), "vCol");
 }
 
 void Renderer::render(const Camera &camera, float time) {

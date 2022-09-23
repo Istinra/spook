@@ -6,11 +6,11 @@
 #define SPOOK_RENDERER_H
 
 
-#include "Camera.h"
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
-#include <glad/glad.h>
+#include "../Camera.h"
+#include "Shader.h"
+#include "Buffer.h"
+#include "VertexArray.h"
+#include "glad/glad.h"
 #include <memory>
 
 class Renderer {
