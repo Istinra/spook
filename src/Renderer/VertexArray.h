@@ -10,7 +10,7 @@
 
 class VertexArray {
 public:
-    explicit VertexArray(std::unique_ptr<VertexBuffer> vertexBuffer);
+    explicit VertexArray(std::unique_ptr<VertexBuffer> vb);
     ~VertexArray();
 
     void bind() const;
