@@ -18,42 +18,38 @@ static const struct {
                 {0.f,   0.6f,  0.f, 0.f, 1.f}
         };
 
-static const float verts[] = {-0.6f, -0.4f, 1.f, 0.f, 0.f, 0.6f, -0.4f, 0.f, 1.f, 0.f, 0.f, 0.6f, 0.f, 0.f, 1.f};
 
 static const char *vertex_shader_text =
-        R"(
-        #version 110
-        "uniform mat4 modelViewProjection;
-        "attribute vec2 vPos;
-        "attribute vec3 vCol;
-        "varying vec3 color
-        "void main()
-        "{
-        "    gl_Position = modelViewProjection * vec4(vPos, 0.0, 1.0);
-        "    color = vCol;
-        "}
-    )";
+        "#version 110\n"
+        "uniform mat4 modelViewProjection;\n"
+        "attribute vec2 vPos;\n"
+        "attribute vec3 vCol;\n"
+        "varying vec3 color;\n"
+        "void main()\n"
+        "{\n"
+        "    gl_Position = modelViewProjection * vec4(vPos, 0.0, 1.0);\n"
+        "    color = vCol;\n"
+        "}\n";
 
-static const char *fragment_shader_text = R"(
-    "#version 110
-    "varying vec3 color;
-    "void main()
-    "{
-    "    gl_FragColor = vec4(color, 1.0);
-    "}
-)";
+static const char *fragment_shader_text =
+        "#version 110\n"
+        "varying vec3 color;\n"
+        "void main()\n"
+        "{\n"
+        "    gl_FragColor = vec4(color, 1.0);\n"
+        "}\n";
 
 void Renderer::onInit() {
     BufferLayout layout = {
             {"vPos", 2, sizeof(float)},
             {"vCol", 3, sizeof(float)}
     };
-    std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>(verts, 14, layout);
+    const float* v = (float *)&vertices;
+    std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>(v, 15, layout);
     shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
-    GLint vpos_location = glGetAttribLocation(shader->getProgram(), "vPos");
-    GLint vcol_location = glGetAttribLocation(shader->getProgram(), "vCol");
-    vertexArray = std::make_unique<VertexArray>(std::move(vertexBuffer));
+    shader->bind();
     mvp_location = glGetUniformLocation(shader->getProgram(), "modelViewProjection");
+    vertexArray = std::make_unique<VertexArray>(std::move(vertexBuffer));
 }
 
 void Renderer::render(const Camera &camera, float time) {
