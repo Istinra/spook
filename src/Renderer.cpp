@@ -21,39 +21,40 @@ static const struct {
 static const float verts[] = {-0.6f, -0.4f, 1.f, 0.f, 0.f, 0.6f, -0.4f, 0.f, 1.f, 0.f, 0.f, 0.6f, 0.f, 0.f, 1.f};
 
 static const char *vertex_shader_text =
-        "#version 110\n"
-        "uniform mat4 MVP;\n"
-        "attribute vec3 vCol;\n"
-        "attribute vec2 vPos;\n"
-        "varying vec3 color;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_Position = MVP * vec4(vPos, 0.0, 1.0);\n"
-        "    color = vCol;\n"
-        "}\n";
+        R"(
+        #version 110
+        "uniform mat4 modelViewProjection;
+        "attribute vec3 vCol;
+        "attribute vec2 vPos;
+        "varying vec3 color
+        "void main()
+        "{
+        "    gl_Position = modelViewProjection * vec4(vPos, 0.0, 1.0);
+        "    color = vCol;
+        "}
+    )";
 
-static const char *fragment_shader_text =
-        "#version 110\n"
-        "varying vec3 color;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_FragColor = vec4(color, 1.0);\n"
-        "}\n";
+static const char *fragment_shader_text = R"(
+    "#version 110
+    "varying vec3 color;
+    "void main()
+    "{
+    "    gl_FragColor = vec4(color, 1.0);
+    "}
+)";
 
 void Renderer::onInit() {
-    vertexBuffer = std::make_unique<VertexBuffer>(verts, 14);
+    BufferLayout layout = {
+            {"vPos", 2, sizeof(float)},
+            {"vCol", 3, sizeof(float)}
+    };
     shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
-    mvp_location = glGetUniformLocation(shader->getProgram(), "MVP");
-    vpos_location = glGetAttribLocation(shader->getProgram(), "vPos");
-    vcol_location = glGetAttribLocation(shader->getProgram(), "vCol");
-
-    vertexBuffer->bind();
-    glEnableVertexAttribArray(vpos_location);
-    glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(vertices[0]), (void *) 0);
-    glEnableVertexAttribArray(vcol_location);
-    glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(vertices[0]), (void *) (sizeof(float) * 2));
+    shader->bind();
+    std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>(verts, 14, layout);
+    vertexArray = std::make_unique<VertexArray>(std::move(vertexBuffer));
+    mvp_location = glGetUniformLocation(shader->getProgram(), "modelViewProjection");
+    GLint i = glGetAttribLocation(shader->getProgram(), "vPos");
+    GLint location = glGetAttribLocation(shader->getProgram(), "vCol");
 }
 
 void Renderer::render(const Camera &camera, float time) {
@@ -65,7 +66,9 @@ void Renderer::render(const Camera &camera, float time) {
     glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
     glm::mat4x4 mvp = p * m;
 
-    glUseProgram(shader->getProgram());
+    shader->bind();
+    vertexArray->bind();
+
     glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
