@@ -44,6 +44,8 @@ static const struct {
                 {0.f,   0.6f,  0.f, 0.f, 1.f}
         };
 
+DemoGame::DemoGame(): camera(800 / (float) 600) {}
+
 void DemoGame::onInit() {
     Application::onInit();
     shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
@@ -58,14 +60,11 @@ void DemoGame::onInit() {
 
 void DemoGame::onUpdate(float time) {
     Application::onUpdate(time);
-    camera.onUpdate(time);
 
-    float ratio = 800 / (float) 600;
-    auto m = glm::identity<glm::mat4x4>();
-    m = camera.getCameraTransform() * glm::rotate(m, time, glm::vec3(0.0f, 0.0f, 1.0f));
-    glm::mat4x4 p = glm::ortho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    glm::mat4x4 mvp = p * m;
+    player.onUpdate(time);
+
+    camera.setPosition(player.getPosition());
 
     Renderer::begin();
-    Renderer::draw(*shader, *vertexArray, mvp);
+    Renderer::draw(*shader, *vertexArray, camera.getViewProjection());
 }

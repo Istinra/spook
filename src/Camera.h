@@ -9,13 +9,20 @@
 
 class Camera {
 public:
-    Camera();
-    void onUpdate(float d);
+    Camera(float aspectRatio);
 
-    const glm::mat4x4 &getCameraTransform() const;
+    void setPosition(const glm::vec3& position);
+
+    const glm::mat4x4 &getProjection() const;
+
+    const glm::mat4x4 &getView() const;
+
+    const glm::mat4x4 &getViewProjection() const;
 
 private:
-    glm::mat4x4 cameraTransform;
+    glm::mat4x4 projection;
+    glm::mat4x4 view;
+    glm::mat4x4 viewProjection;
 };
 
 

@@ -4,23 +4,26 @@
 
 #include "Camera.h"
 #include "glm/ext/matrix_transform.hpp"
-#include "Input/Input.h"
+#include "glm/ext/matrix_clip_space.hpp"
 
-Camera::Camera() : cameraTransform(glm::identity<glm::mat4x4>()) {
+Camera::Camera(float aspectRatio): view(glm::identity<glm::mat4x4>()) {
+    projection = glm::ortho(-aspectRatio, aspectRatio, -1.f, 1.f, 1.f, -1.f);
 }
 
-void Camera::onUpdate(float d) {
-    if (isKeyPressed(KeyCodes::A)) {
-        cameraTransform = glm::translate(cameraTransform, glm::vec3(-0.1f, 0, 0));
-    } else if (isKeyPressed(KeyCodes::D)) {
-        cameraTransform = glm::translate(cameraTransform, glm::vec3(0.1f, 0, 0));
-    } else if (isKeyPressed(KeyCodes::W)) {
-        cameraTransform = glm::translate(cameraTransform, glm::vec3(0, 0.1f, 0));
-    } else if (isKeyPressed(KeyCodes::S)) {
-        cameraTransform = glm::translate(cameraTransform, glm::vec3(0, -0.1f, 0));
-    }
+void Camera::setPosition(const glm::vec3 &position) {
+    view = glm::translate(glm::identity<glm::mat4x4>(), position);
+    viewProjection = projection * view;
 }
 
-const glm::mat4x4 &Camera::getCameraTransform() const {
-    return cameraTransform;
+const glm::mat4x4 &Camera::getProjection() const {
+    return projection;
 }
+
+const glm::mat4x4 &Camera::getView() const {
+    return view;
+}
+
+const glm::mat4x4 &Camera::getViewProjection() const {
+    return viewProjection;
+}
+
