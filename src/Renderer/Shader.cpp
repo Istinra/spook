@@ -2,8 +2,8 @@
 // Created by Sam on 23/09/2022.
 //
 
-#include <vector>
 #include "Shader.h"
+#include "glm/gtc/type_ptr.hpp"
 
 Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource) {
     GLint success = 0;
@@ -25,7 +25,7 @@ Shader::Shader(const char *vertexShaderSource, const char *fragmentShaderSource)
     glLinkProgram(program);
 
     GLint isLinked = 0;
-    glGetProgramiv(program, GL_LINK_STATUS, (int *)&isLinked);
+    glGetProgramiv(program, GL_LINK_STATUS, (int *) &isLinked);
 //TODO
 }
 
@@ -35,10 +35,15 @@ Shader::~Shader() {
     glDeleteShader(vertexShader);
 }
 
-void Shader::bind() {
+void Shader::bind() const {
     glUseProgram(program);
 }
 
 GLuint Shader::getProgram() const {
     return program;
+}
+
+void Shader::SetUniformMat4(const std::string &name, const glm::mat4 &matrix) {
+    GLint location = glGetUniformLocation(program, name.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }

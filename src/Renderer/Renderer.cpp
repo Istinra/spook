@@ -19,41 +19,48 @@ static const struct {
         };
 
 
-static const char *vertex_shader_text =
-        "#version 110\n"
-        "uniform mat4 modelViewProjection;\n"
-        "attribute vec2 vPos;\n"
-        "attribute vec3 vCol;\n"
-        "varying vec3 color;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_Position = modelViewProjection * vec4(vPos, 0.0, 1.0);\n"
-        "    color = vCol;\n"
-        "}\n";
+static const char *vertex_shader_text = R"(
+    #version 330 core
 
-static const char *fragment_shader_text =
-        "#version 110\n"
-        "varying vec3 color;\n"
-        "void main()\n"
-        "{\n"
-        "    gl_FragColor = vec4(color, 1.0);\n"
-        "}\n";
+    uniform mat4 modelViewProjection;
+
+    layout(location = 0) in vec2 vPos;
+    layout(location = 1) in vec3 vCol;
+
+    out vec3 color;
+
+    void main()
+    {
+        gl_Position = modelViewProjection * vec4(vPos, 0.0, 1.0);
+        color = vCol;
+    };
+)";
+
+static const char *fragment_shader_text = R"(
+    #version 330 core
+
+    in vec3 color;
+
+    void main()
+    {
+        gl_FragColor = vec4(color, 1.0);
+    };
+)";
+
 
 void Renderer::onInit() {
     BufferLayout layout = {
             {"vPos", 2, sizeof(float)},
             {"vCol", 3, sizeof(float)}
     };
-    const float* v = (float *)&vertices;
+    const float *v = (float *) &vertices;
     std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>(v, 15, layout);
     shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
     shader->bind();
-    mvp_location = glGetUniformLocation(shader->getProgram(), "modelViewProjection");
     vertexArray = std::make_unique<VertexArray>(std::move(vertexBuffer));
 }
 
 void Renderer::render(const Camera &camera, float time) {
-
     glClear(GL_COLOR_BUFFER_BIT);
     float ratio = 800 / (float) 600;
     glm::mat4x4 m = glm::identity<glm::mat4x4>();
@@ -62,8 +69,8 @@ void Renderer::render(const Camera &camera, float time) {
     glm::mat4x4 mvp = p * m;
 
     shader->bind();
+    shader->SetUniformMat4("modelViewProjection", mvp);
     vertexArray->bind();
 
-    glUniformMatrix4fv(mvp_location, 1, GL_FALSE, glm::value_ptr(mvp));
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }

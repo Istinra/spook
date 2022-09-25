@@ -32,10 +32,10 @@ Early to do:
   * Having a basic concept of a world
 * **This one**: Actual simple game class implemented using generic code
   * Renderer
-    * Classes for GL primitives
-      * Shaders
-      * VBOs + Layout
-      * VAOs
+    * ~~Classes for GL primitives~~
+      * ~~Shaders~~
+      * ~~VBOs + Layout~~
+      * ~~VAOs~~
     * Mesh class
   * Demo game class
     * Loading
