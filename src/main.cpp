@@ -1,8 +1,8 @@
 #define GLFW_INCLUDE_NONE
 
 #include <GLFW/glfw3.h>
-#include "Application.h"
 #include "Window.h"
+#include "Game/DemoGame.h"
 
 int main() {
 
@@ -10,7 +10,7 @@ int main() {
     window.initialiseWindow();
     Window::instance = &window;
 
-    Application app;
+    DemoGame app;
     app.onInit();
 
     while (!glfwWindowShouldClose(static_cast<GLFWwindow*>(window.getNativeWindow()))) {

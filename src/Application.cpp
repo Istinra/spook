@@ -13,6 +13,4 @@ void Application::OnEvent() {
 }
 
 void Application::onUpdate(float time) {
-    camera.onUpdate(time);
-    renderer.render(camera, time);
 }

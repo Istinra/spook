@@ -55,9 +55,8 @@ void Renderer::onInit() {
     };
     const float *v = (float *) &vertices;
     std::unique_ptr<VertexBuffer> vertexBuffer = std::make_unique<VertexBuffer>(v, 15, layout);
-    shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
-    shader->bind();
     vertexArray = std::make_unique<VertexArray>(std::move(vertexBuffer));
+    shader = std::make_unique<Shader>(vertex_shader_text, fragment_shader_text);
 }
 
 void Renderer::render(const Camera &camera, float time) {

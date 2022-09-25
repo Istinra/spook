@@ -18,6 +18,7 @@ class Renderer {
 public:
     void onInit();
 
+    void beingScene(const glm::mat4x4& cameraTransform);
     void render(const Camera &camera, float time);
 
 private:

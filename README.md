@@ -36,9 +36,10 @@ Early to do:
       * ~~Shaders~~
       * ~~VBOs + Layout~~
       * ~~VAOs~~
-    * Mesh class
   * Demo game class
+    * Game Separation
     * Loading
     * Level
     * Player
     * Camera management
+  * Mesh class

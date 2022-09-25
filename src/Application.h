@@ -12,11 +12,12 @@ class Application {
 
 public:
     Application() = default;
-    void onInit();
-    void OnEvent();
-    void onUpdate(float time);
-private:
-    Camera camera;
+    virtual ~Application() = default;
+    virtual void onInit();
+    virtual void OnEvent();
+    virtual void onUpdate(float time);
+
+protected:
     Renderer renderer;
 
 };
