@@ -38,15 +38,18 @@ class VertexBuffer {
 public:
     explicit VertexBuffer(const float *vertices, uint32_t vertexCount, BufferLayout bufferLayout);
 
-    void bind();
+    void bind() const;
 
     [[nodiscard]] GLuint getHandle() const;
 
     [[nodiscard]] const BufferLayout &getLayout() const;
 
+    uint32_t getVertexCount() const;
+
 private:
     GLuint handle;
     BufferLayout layout;
+    uint32_t vertexCount;
 };
 
 

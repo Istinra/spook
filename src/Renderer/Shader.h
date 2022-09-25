@@ -19,7 +19,7 @@ public:
 
     GLuint getProgram() const;
 
-    void SetUniformMat4(const std::string& name, const glm::mat4& matrix);
+    void setUniformMat4(const std::string& name, const glm::mat4& matrix) const;
 
 private:
     GLuint vertexShader;

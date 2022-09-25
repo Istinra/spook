@@ -30,14 +30,15 @@ uint32_t BufferLayout::getStride() const {
 
 VertexBuffer::VertexBuffer(const float *vertices, uint32_t vertexCount, BufferLayout bufferLayout) :
         handle(0),
-        layout(std::move(bufferLayout)) {
+        layout(std::move(bufferLayout)),
+        vertexCount(vertexCount) {
     glGenBuffers(1, &handle);
     glBindBuffer(GL_ARRAY_BUFFER, handle);
     uint32_t totalSize = sizeof(float) * vertexCount;
     glBufferData(GL_ARRAY_BUFFER, totalSize, vertices, GL_STATIC_DRAW);
 }
 
-void VertexBuffer::bind() {
+void VertexBuffer::bind() const {
     glBindBuffer(GL_ARRAY_BUFFER, handle);
 }
 
@@ -47,4 +48,8 @@ GLuint VertexBuffer::getHandle() const {
 
 const BufferLayout &VertexBuffer::getLayout() const {
     return layout;
+}
+
+uint32_t VertexBuffer::getVertexCount() const {
+    return vertexCount;
 }

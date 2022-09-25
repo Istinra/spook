@@ -11,9 +11,12 @@
 class VertexArray {
 public:
     explicit VertexArray(std::unique_ptr<VertexBuffer> vb);
+
     ~VertexArray();
 
     void bind() const;
+
+    [[nodiscard]] uint32_t getVertexCount() const { return vertexBuffer->getVertexCount(); }
 
 private:
     uint32_t handle;

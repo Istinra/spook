@@ -18,7 +18,8 @@ public:
 
 private:
     Camera camera;
-
+    std::unique_ptr<Shader> shader;
+    std::unique_ptr<VertexArray> vertexArray;
 };
 
 

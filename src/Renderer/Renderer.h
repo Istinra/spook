@@ -18,13 +18,11 @@ class Renderer {
 public:
     void onInit();
 
-    void beingScene(const glm::mat4x4& cameraTransform);
-    void render(const Camera &camera, float time);
+    static void begin();
+
+    static void draw(const Shader &shader, const VertexArray &vertexArray, const glm::mat4x4 &transform);
 
 private:
-    std::unique_ptr<Shader> shader;
-    std::unique_ptr<VertexArray> vertexArray;
-    GLint mvp_location;
 };
 
 
