@@ -19,7 +19,6 @@ public:
 
 protected:
     Renderer renderer;
-
 };
 
 #endif //SPOOK_APPLICATION_H

@@ -20,9 +20,10 @@ public:
 
     static void begin();
 
-    static void draw(const Shader &shader, const VertexArray &vertexArray, const glm::mat4x4 &transform);
+    void draw(const VertexArray &vertexArray, const glm::mat4x4 &transform);
 
 private:
+    std::unique_ptr<Shader> shader;
 };
 
 

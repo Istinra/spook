@@ -8,6 +8,7 @@
 
 #include "../Application.h"
 #include "Player.h"
+#include "Level.h"
 
 class DemoGame : public Application {
 
@@ -19,10 +20,8 @@ public:
     void onUpdate(float time) override;
 
 private:
-    Player player;
+    Level level;
     Camera camera;
-    std::unique_ptr<Shader> shader;
-    std::unique_ptr<VertexArray> vertexArray;
 };
 
 

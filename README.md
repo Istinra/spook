@@ -1,16 +1,10 @@
-Early to do:
-
-* Windows setup complete
-  * Platform folder with windows code
-  * Main function inits App
-  * Calls window code with props and callbacks binding to App OnEvent
-* Input handling
-* Triangle rendering
-* Emscripten build
-/* Platform abstraction
-* Roadmap
+# TODO List
 
 
+* Backlog
+  * Logging
+    * Initialisation error handling
+  * Emscripten Build
 
 # General Flow
 * Entry Point
@@ -21,9 +15,6 @@ Early to do:
 * Basic Rendering
 
 # Options For Next Steps
-* Core Systems
-  * Logging
-  * Emscripten build
 * Rendering
   * Rendering an actual mesh
   * Camera

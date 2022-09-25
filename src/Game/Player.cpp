@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "../Input/Input.h"
 
-Player::Player(): position(0) {}
+Player::Player(): position(glm::vec3(-1.0f, -0.5f, 0)) {}
 
 void Player::onUpdate(float dt) {
     if (isKeyPressed(KeyCodes::A)) {

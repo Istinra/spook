@@ -15,7 +15,7 @@ public:
 
     void onUpdate(float dt);
 
-    const glm::vec3 &getPosition() const;
+    [[nodiscard]] const glm::vec3 &getPosition() const;
 
 private:
 
